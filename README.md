@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Interview Quiz App
 
-## Getting Started
+A frontend-focused interview preparation app built with Next.js.  
+The app quizzes users on commonly asked Frontend and Full-Stack interview questions using MCQs, with an emphasis on real interview signal rather than trivia.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+
+- Topic-based quizzes (JavaScript, React, Next.js, Node.js, Express, MongoDB, TypeScript)
+- Randomized question selection per attempt
+- Question bank remains server-only
+- Find-the-Bug style questions
+- Frontend System Design MCQs
+- Server-side evaluation of answers
+- Type-safe and modular architecture
+
+---
+
+## Question Schema
+
+All questions follow the structure below:
+
+```ts
+{
+  id: string;
+  question: string;
+  relatedCode?: string;
+  options: string[]; // length = 4
+  answer: number; // index of correct option
+  relevantTags?: string[];
+}
+````
+
+---
+
+## API Endpoints
+
+### Get Questions
+
+Returns 20 random questions for a given topic.
+
+```
+GET /api/getQuestions?topic=react
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Response:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```json
+{
+  "data": [ /* 20 questions */ ]
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* Full question bank stays on the server
+* Questions are randomized per request
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+### Submit Results
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Evaluates user answers on the server.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+POST /api/getResults
+```
 
-## Deploy on Vercel
+Payload:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```json
+{
+  "topic": "react",
+  "userAnswers": [
+    { "id": "react-key-02", "ansIndex": 1 },
+    { "id": "react-effect-05", "ansIndex": 2 }
+  ]
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Response:
+
+```json
+{
+  "data": 14,
+  "answers": []
+}
+```
+
+---
+
+## Quiz Types Included
+
+* Standard MCQs
+* Find-the-Bug (JavaScript, React, Next.js)
+* Output prediction questions
+* React mental model questions
+* Frontend System Design questions
+* Next.js App Router pitfalls
+
+---
+
+## Tech Stack
+
+* Next.js (App Router)
+* React
+* TypeScript
+* Server-only APIs
+* No database (question bank stored as TypeScript assets)
+
+---
+
+## Security and Design Notes
+
+* Question bank is server-only
+* Client receives a limited subset per attempt
+* Answers are validated on the server
+* Designed for interview preparation, not secure examinations
+
+---
+
+## Possible Future Enhancements
+
+* Timed quiz mode
+* Difficulty-based question selection
+* Retry incorrect questions
+* Weak-area analysis
+* Progress tracking with authentication
+
+---
+
+## Purpose
+
+This project is intended to:
+
+* Prepare for real frontend and full-stack interviews
+* Strengthen debugging and reasoning skills
+* Demonstrate senior-level frontend engineering thinking
+* Be easy to explain and defend during interviews
