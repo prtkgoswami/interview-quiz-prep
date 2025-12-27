@@ -45,8 +45,9 @@ const QuizView = ({ topic }: { topic: Topic }) => {
         <header className="px-5 py-4 flex justify-start w-full">
           <h2 className="text-3xl font-extralight text-zinc-100">Quiz</h2>
         </header>
-        <main className="flex-1 flex flex-col gap-8 w-full justify-center items-center">
-          <h1 className="text-4xl text-zinc-200 text-center leading-relaxed">
+        <div className="p-8 md:p-0" />
+        <main className="flex-1 flex flex-col gap-8 w-full md:justify-center items-center">
+          <h1 className="text-3xl md:text-4xl text-zinc-200 text-center leading-relaxed">
             Testing on{" "}
             <span className="text-amber-500">{TOPIC_TITLES[topic]}</span>.<br />
             Ready?
