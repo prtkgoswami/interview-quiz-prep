@@ -4,5 +4,6 @@ export type Question = {
   relatedCode?: string;
   options: string[];
   answer?: number;
+  correctIndex?: number;
   relevantTags?: string[];
 };

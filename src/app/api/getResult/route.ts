@@ -1,12 +1,12 @@
 import { QUESTION_MAP, Topic } from "@/assets";
-import { Question } from "@/types/question";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 type UserAnswer = {
   id: string;
-  ansIndex: number;
+  selectedIndex: number;
+  correctIndex: number;
 };
 
 export async function POST(req: Request) {
@@ -29,24 +29,11 @@ export async function POST(req: Request) {
     );
   }
 
-  const questions = QUESTION_MAP[topic] as Question[];
-
-  const questionsMap: Record<string, Question> = {};
-  for (const q of questions) {
-    questionsMap[q.id] = q;
-  }
-
   let score = 0;
-  const actualAnswers = []
-  for (const { id, ansIndex } of answers) {
-    const question = questionsMap[id];
+  for (const { selectedIndex, correctIndex } of answers) {
+    if (selectedIndex < 0) continue;
 
-    if (!question) continue; // invalid question id
-
-    actualAnswers.push(question.answer)
-    if (ansIndex < 0 || ansIndex >= question.options.length) continue;
-
-    if (question.answer === ansIndex) {
+    if (selectedIndex === correctIndex) {
       score++;
     }
   }
@@ -54,7 +41,6 @@ export async function POST(req: Request) {
   return NextResponse.json(
     { data: {
         score: score,
-        answers: actualAnswers
     } },
     { status: 200 }
   );

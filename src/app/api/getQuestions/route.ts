@@ -1,5 +1,5 @@
 import { QUESTION_MAP, Topic } from "@/assets";
-import { getRandomItems } from "@/utils/random";
+import { getRandomItems, shuffleArray, shuffleWithIndex } from "@/utils/random";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic"
@@ -17,12 +17,23 @@ export async function GET(req: Request) {
 
     const questions = QUESTION_MAP[topic];
     const subset = getRandomItems(questions, 15);
-    const result = subset.map(q => {
-        const {answer, ...rest} = q;
-        return rest;
+    const selectedQuestions = subset.map(q => {
+        const { shuffled, newCorrectIndex } = shuffleWithIndex(
+            q.options,
+            q.answer!
+        );
+
+        return {
+            id: q.id,
+            question: q.question,
+            relatedCode: q.relatedCode,
+            options: shuffled,
+            correctIndex: newCorrectIndex
+        };
     })
+
     return NextResponse.json(
-        {data: result},
+        {data: selectedQuestions},
         {status: 200}
     )
 }
