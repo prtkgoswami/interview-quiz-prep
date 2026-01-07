@@ -29,7 +29,7 @@ const useQuiz = (topic?: Topic): HookResponse => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [activeQIndex, setActiveQIndex] = useState(-1);
   const [score, setScore] = useState(-1);
-  const answers = useRef<number[]>([])
+  const answers = useRef<number[]>([]);
   const [correctAnswers, setCorrectAnswers] = useState<number[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isLoadingResults, setIsLoadingResults] = useState(false);
@@ -65,8 +65,12 @@ const useQuiz = (topic?: Topic): HookResponse => {
       setError(undefined);
       setIsLoadingResults(true);
       const ansList = answers.current.map((ans, i) => {
-        const qid = questions[i].id;
-        return { id: qid, ansIndex: ans };
+        const question = questions[i];
+        return {
+          id: question.id,
+          selectedIndex: ans,
+          correctIndex: question.correctIndex,
+        };
       });
 
       await fetch(`/api/getResult/`, {
@@ -82,7 +86,9 @@ const useQuiz = (topic?: Topic): HookResponse => {
         .then(async (data) => await data.json())
         .then((data) => {
           setScore(data.data.score);
-          setCorrectAnswers(data.data.answers);
+          setCorrectAnswers(
+            questions.map((question) => question.correctIndex ?? -1)
+          );
         })
         .catch((err) => {
           throw new Error("Failed to fetch Result");
@@ -119,7 +125,7 @@ const useQuiz = (topic?: Topic): HookResponse => {
   const reset = () => {
     setQuestions([]), setActiveQIndex(-1);
     setScore(-1);
-    answers.current = []
+    answers.current = [];
     setError(undefined);
   };
 

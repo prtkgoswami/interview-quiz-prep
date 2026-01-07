@@ -31,8 +31,6 @@ const QuestionView = ({
   next,
   prev,
 }: Props) => {
-  if (isResultView)
-    console.log(isResultView, currentQuestion?.id, currentAnswer, correctAnswer);
 
   const [selectedOption, setSelectedOption] = useState<number>(
     currentAnswer === undefined ? -1 : currentAnswer

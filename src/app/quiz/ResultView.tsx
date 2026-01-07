@@ -26,7 +26,6 @@ const ResultView = ({ score, totalCount, topic, reset }: Props) => {
 
     const storageKey = `previous-score-${topic}`;
     const prevData = localStorage.getItem(storageKey);
-    console.log("localstorage prev data", prevData, score);
     if (prevData) {
       setPreviousScore(JSON.parse(prevData));
     }
@@ -47,9 +46,9 @@ const ResultView = ({ score, totalCount, topic, reset }: Props) => {
       <h4 className="w-full text-2xl font-extralight p-2 border-b border-zinc-400 text-zinc-800">
         Results
       </h4>
-      <div className="flex flex-wrap w-[90%] gap-4 ">
+      <div className="flex flex-col md:flex-row items-center justify-center w-[90%] gap-4 ">
         {previousScore && (
-          <div className="px-5 py-5 w-full bg-amber-500 rounded-lg shadow-xl flex flex-col gap-4 justify-center items-center my-8">
+          <div className="px-5 py-5 w-3/4 md:w-1/2 h-max bg-amber-500 rounded-lg shadow-xl flex flex-col gap-4 justify-center items-center md:my-8">
             <div className="text-center">
               <h3 className="text-4xl text-zinc-800 font-medium">Previously</h3>
               <p className="text-xs text-zinc-700">
@@ -70,7 +69,7 @@ const ResultView = ({ score, totalCount, topic, reset }: Props) => {
           </div>
         )}
 
-        <div className="px-5 py-5 w-full bg-amber-500 rounded-lg shadow-xl flex flex-col gap-4 justify-center items-center my-8">
+        <div className="px-5 py-5 w-3/4 md:w-1/2 h-max bg-amber-500 rounded-lg shadow-xl flex flex-col gap-4 justify-center items-center md:my-8">
           <h3 className="text-4xl text-zinc-800 font-medium">Your Score</h3>
           <h1 className="text-6xl font-semibold text-zinc-800">{score}</h1>
           <p className="text-zinc-700 ">Of {totalCount} Questions</p>
@@ -81,7 +80,7 @@ const ResultView = ({ score, totalCount, topic, reset }: Props) => {
         className="cursor-pointer px-10 py-3 text-lg rounded-lg bg-amber-500 text-zinc-800 hover:bg-amber-600 "
         onClick={reset}
       >
-        Reset
+        Restart
       </button>
     </div>
   );
